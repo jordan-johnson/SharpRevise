@@ -6,6 +6,7 @@ namespace SharpRevise.Model {
 	public class Settings {
 		public List<string> Categories {get;set;}
 		public List<string> Command {get;set;}
+		public bool MinimizeOnStart {get;set;}
 
 		[JsonIgnore]
 		public const string FileName = "settings.json";
@@ -22,11 +23,13 @@ namespace SharpRevise.Model {
 
 			Command = null;
 
+			MinimizeOnStart = false;
+
 			Update();
 		}
 
 		public bool IsAvailable() {
-			if(File.Exists("settings.json")) {
+			if(File.Exists(FileName)) {
 				return true;
 			}
 
@@ -34,7 +37,7 @@ namespace SharpRevise.Model {
 		}
 
 		public void Update() {
-			Service.Serializer.Serialize(this, "settings.json");
+			Service.Serializer.Serialize(this, FileName);
 		}
 	}
 }

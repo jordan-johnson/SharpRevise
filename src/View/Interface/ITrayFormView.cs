@@ -9,6 +9,8 @@ namespace SharpRevise.View.Interface {
 		int CategoryIndex {get;set;}
 		FormStartPosition StartPosition {get;set;}
 		System.Drawing.Point Location {get;set;}
+		string Comment {get;}
+		string CurrentCategory {get;}
 
 		bool Visible {get;set;}
 		void Show();

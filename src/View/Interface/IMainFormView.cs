@@ -2,11 +2,13 @@
 
 namespace SharpRevise.View.Interface {
 	public interface IMainFormView {
-		string HotkeyField {get;set;}
-		string HotkeyButton {get;set;}
+		TextBox HotkeyField {get;}
+		Button HotkeyButton {get;}
+		TreeView SortTree {get;}
+
+		FormStartPosition StartPosition {get;set;}
+		bool MaximizeBox {get;set;}
 
 		Presenter.MainFormPresenter Presenter {set;}
-
-		void HotkeyFieldFocus();
 	}
 }

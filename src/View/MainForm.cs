@@ -1,61 +1,63 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using SharpRevise.View.Interface;
 
 namespace SharpRevise.View {
 	public partial class MainForm : Form, IMainFormView {
-		public string HotkeyField {
+		/// <summary>
+		/// Treeview for categories and comments
+		/// </summary>
+		public TreeView SortTree {
 			get {
-				return this.keyListenField.Text;
-			}
-			set {
-				this.keyListenField.Text = value;
+				return sortTree;
 			}
 		}
 
-		public string HotkeyButton {
+		/// <summary>
+		/// Gives access to hotkey-assigner field
+		/// </summary>
+		public TextBox HotkeyField {
 			get {
-				return this.buttonKeyListen.Text;
-			}
-			set {
-				this.buttonKeyListen.Text = value;
+				return keyListenField;
 			}
 		}
 
+		/// <summary>
+		/// Gives access to hotkey-assigner button
+		/// </summary>
+		public Button HotkeyButton {
+			get {
+				return buttonKeyListen;
+			}
+		}
+
+		/// <summary>
+		/// View's presenter
+		/// </summary>
 		public Presenter.MainFormPresenter Presenter {private get; set;}
 
+		/// <summary>
+		/// Main form constructor initializes WinForms
+		/// </summary>
 		public MainForm() {
 			InitializeComponent();
-
-			MaximizeBox = false;
-
-			setPosition();
 		}
 
-		public void HotkeyFieldFocus() {
-			keyListenField.Focus();
-		}
-
-		protected override void WndProc(ref Message m) {
-			Presenter.CommandAction(m.Msg);
-
-			base.WndProc(ref m);
-		}
-
-		private void setPosition() {
-			StartPosition = FormStartPosition.CenterScreen;
-		}
-
-		private void assignCommandEvent(object sender, EventArgs e) {
-			Presenter.ToggleHotkeyListener();
-		}
-
-		private void keyListenerDownEvent(object sender, KeyEventArgs e) {
-			Presenter.AddKeyToCommand(e.KeyCode);
-		}
-
+		/// <summary>
+		/// On close, clean up global hotkey
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void formClosingEvent(object sender, FormClosingEventArgs e) {
 			Presenter.DeregisterHotkey();
+		}
+
+		/// <summary>
+		/// On-click event for Build Changelog menu option
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void buildChangelogMenuEvent(object sender, System.EventArgs e) {
+			Presenter.BuildChangelog();
 		}
 	}
 }

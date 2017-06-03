@@ -52,6 +52,7 @@
 			this.commentField.Name = "commentField";
 			this.commentField.Size = new System.Drawing.Size(329, 20);
 			this.commentField.TabIndex = 0;
+			this.commentField.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyDownEvent);
 			// 
 			// TrayForm
 			// 

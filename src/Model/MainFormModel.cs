@@ -2,7 +2,6 @@
 using System.Windows.Forms;
 using SharpHotkey;
 using SharpRevise.Presenter;
-using SharpRevise.View.Interface;
 
 namespace SharpRevise.Model {
 	public class MainFormModel {
@@ -27,6 +26,11 @@ namespace SharpRevise.Model {
 		public List<Keys> CurrentKeys {get;set;}
 
 		/// <summary>
+		/// Tree of categories and comments
+		/// </summary>
+		public TreeView SortTree {get;set;}
+
+		/// <summary>
 		/// Converts current keys to string
 		/// </summary>
 		public List<string> CurrentKeysToString {
@@ -41,7 +45,15 @@ namespace SharpRevise.Model {
 			}
 		}
 
-		public TrayFormPresenter TrayForm {get;set;}
+		/// <summary>
+		/// Handles system tray info
+		/// </summary>
+		public SystemTray SystemTrayHandler = new SystemTray();
+
+		/// <summary>
+		/// Tray form presenter
+		/// </summary>
+		public TrayFormPresenter TrayForm = new TrayFormPresenter();
 
 		/// <summary>
 		/// Constructor will either read or write a settings file
@@ -54,6 +66,8 @@ namespace SharpRevise.Model {
 			} else {
 				Settings.WriteNew();
 			}
+
+			TrayForm.SubmitAction = AddComment;
 		}
 
 		/// <summary>
@@ -65,6 +79,17 @@ namespace SharpRevise.Model {
 
 				Settings.Update();
 			}
+		}
+
+		/// <summary>
+		/// Adds a comment to a category
+		/// </summary>
+		/// <param name="category"></param>
+		/// <param name="comment"></param>
+		public void AddComment(string category, string comment) {
+			Service.TreeView.AddChildNode(SortTree.Nodes, category, comment);
+
+			SortTree.ExpandAll();
 		}
 	}
 }

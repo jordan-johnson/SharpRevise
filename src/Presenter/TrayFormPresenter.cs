@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using SharpRevise.View.Interface;
@@ -9,6 +10,8 @@ namespace SharpRevise.Presenter {
 	public class TrayFormPresenter {
 		private ITrayFormView _view;
 		private TrayFormModel _model;
+
+		public Action<string, string> SubmitAction {get;set;}
 
 		public void Create(List<string> categories) {
 			_model = new TrayFormModel();
@@ -24,16 +27,19 @@ namespace SharpRevise.Presenter {
 			setFormStyling();
 		}
 
-		public void Toggle(List<string> categories) {
-			if(_view != null) {
-				if(_view.Visible) {
-					_view.Close();
-
-					return;
-				}
+		public void KeyPressHandler(Keys key) {
+			if(SubmitAction != null && key == Keys.Enter) {
+				SubmitAction(_view.CurrentCategory, _view.Comment);
+				_view.Close();
 			}
+		}
 
-			Create(categories);
+		public void Toggle(List<string> categories) {
+			if(_view != null && _view.Visible) {
+				_view.Close();
+			} else {
+				Create(categories);
+			}
 		}
 
 		public void setFormStyling() {
@@ -54,6 +60,8 @@ namespace SharpRevise.Presenter {
 		}
 
 		private void setupCategories() {
+			_view.Categories.Clear();
+
 			foreach(string category in _model.Categories) {
 				_view.Categories.Add(category);
 			}
